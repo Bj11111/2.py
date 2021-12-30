@@ -84,7 +84,7 @@ def getPlayerMove(board):
         st.write('What is your next move? (1-9)')
         move = input()
     return int(move)
-
+st.session
 def chooseRandomMoveFromList(board, movesList):
     # 隨機返回一個可以落子的座標
     # 如果沒有所給的movesList中沒有可以落子的，返回None
