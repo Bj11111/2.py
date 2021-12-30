@@ -30,9 +30,9 @@ def inputPlayerLetter():
         letter = letter.upper()
 st.session
     # the first element in the list is the player’s letter, the second is the computer's letter.
-    if letter == 'X':
+if letter == 'X':
         return ['X', 'O']
-    else:
+else:
         return ['O', 'X']
 
 def whoGoesFirst():
