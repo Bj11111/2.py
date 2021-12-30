@@ -150,7 +150,7 @@ while True:
     
     playerLetter, computerLetter = inputPlayerLetter()
     turn = whoGoesFirst()
-    print('The ' + turn + ' will go first.')
+    st.write('The ' + turn + ' will go first.')
     gameIsPlaying = True
 
     while gameIsPlaying:
