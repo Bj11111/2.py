@@ -23,8 +23,8 @@ def drawBoard(board):
 def inputPlayerLetter():
     # Lets the player type which letter they want to be.
     # Returns a list with the player’s letter as the first item, and the computer's letter as the second.
+    st.session
     letter = ''
-st.session
     while not (letter == 'X' or letter == 'O'):
         st.write('Do you want to be X or O?')
         letter = st.text_input('please input X or O?' , 'X O')
