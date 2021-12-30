@@ -1,30 +1,33 @@
 # Tic Tac Toe
 
+import streamlit as st
+
 import random
 
 # 列印方法
 def drawBoard(board):
     # This function prints out the board that it was passed.
     # "board" is a list of 10 strings representing the board (ignore index 0)
-    print('   |   |')
-    print(' ' + board[7] + ' | ' + board[8] + ' | ' + board[9])
-    print('   |   |')
-    print('-----------')
-    print('   |   |')
-    print(' ' + board[4] + ' | ' + board[5] + ' | ' + board[6])
-    print('   |   |')
-    print('-----------')
-    print('   |   |')
-    print(' ' + board[1] + ' | ' + board[2] + ' | ' + board[3])
-    print('   |   |')
+    st.write('   |   |')
+    st.write(' ' + board[7] + ' | ' + board[8] + ' | ' + board[9])
+    st.write('   |   |')
+    st.write('-----------')
+    st.write('   |   |')
+    st.write(' ' + board[4] + ' | ' + board[5] + ' | ' + board[6])
+    st.write('   |   |')
+    st.write('-----------')
+    st.write('   |   |')
+    st.write(' ' + board[1] + ' | ' + board[2] + ' | ' + board[3])
+    st.write('   |   |')
 
 def inputPlayerLetter():
     # Lets the player type which letter they want to be.
     # Returns a list with the player’s letter as the first item, and the computer's letter as the second.
     letter = ''
     while not (letter == 'X' or letter == 'O'):
-        print('Do you want to be X or O?')
-        letter = input().upper()
+        st.write('Do you want to be X or O?')
+        letter = st.text_input('please input X or O?' , 'X O')
+        letter = letter.upper()
 
     # the first element in the list is the player’s letter, the second is the computer's letter.
     if letter == 'X':
@@ -41,7 +44,7 @@ def whoGoesFirst():
 
 def playAgain():
     # This function returns True if the player wants to play again, otherwise it returns False.
-    print('Do you want to play again? (yes or no)')
+    st.write('Do you want to play again? (yes or no)')
     return input().lower().startswith('y')
 
 # 下子
@@ -138,7 +141,7 @@ def isBoardFull(board):
             return False
     return True
 
-print('Welcome to Tic Tac Toe!')
+    st.write('Welcome to Tic Tac Toe!')
 
 while True:
     # 更新棋盤
@@ -157,12 +160,12 @@ while True:
 
             if isWinner(theBoard, playerLetter):
                 drawBoard(theBoard)
-                print('Hooray! You have won the game!')
+                st.write('Hooray! You have won the game!')
                 gameIsPlaying = False
             else:
                 if isBoardFull(theBoard):
                     drawBoard(theBoard)
-                    print('The game is a tie!')
+                    st.write('The game is a tie!')
                     break
                 else:
                     turn = 'computer'
@@ -174,15 +177,15 @@ while True:
 
             if isWinner(theBoard, computerLetter):
                 drawBoard(theBoard)
-                print('The computer has beaten you! You lose.')
+                st.write('The computer has beaten you! You lose.')
                 gameIsPlaying = False
             else:
                 if isBoardFull(theBoard):
                     drawBoard(theBoard)
-                    print('The game is a tie!')
+                    st.write('The game is a tie!')
                     break
                 else:
                     turn = 'player'
-
+                    
     if not playAgain():
         break
