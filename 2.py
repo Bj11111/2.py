@@ -20,7 +20,7 @@ def drawBoard(board):
     st.write('    |    |')
     st.write(' ' + board[1] + '  | ' + board[2] + '  | ' + board[3])
     st.write('    |    |')
-st.session
+
 def inputPlayerLetter():
     # Lets the player type which letter they want to be.
     # Returns a list with the player’s letter as the first item, and the computer's letter as the second
@@ -48,6 +48,7 @@ def playAgain():
     return input().lower().startswith('y')
 
 # 下子
+st.session
 def makeMove(board, letter, move):
     board[move] = letter
 
