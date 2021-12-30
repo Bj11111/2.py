@@ -1,6 +1,6 @@
 # Tic Tac Toe
 
-import streamlit as st
+# import streamlit as st
 
 import random
 
@@ -142,6 +142,7 @@ def isBoardFull(board):
 
     st.write('Welcome to Tic Tac Toe!')
 st.session
+    
 while True:
     # 更新棋盤
     theBoard = [' '] * 10
