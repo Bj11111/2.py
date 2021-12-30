@@ -1,191 +1,188 @@
-import numpy as np
-from math import inf as infinity
-import itertools
+# Tic Tac Toe
+
 import random
-import time
 
-game_state = [[' ',' ',' '],
-              [' ',' ',' '],
-              [' ',' ',' ']]
-players = ['X','O']
+# 列印方法
+def drawBoard(board):
+    # This function prints out the board that it was passed.
+    # "board" is a list of 10 strings representing the board (ignore index 0)
+    print('   |   |')
+    print(' ' + board[7] + ' | ' + board[8] + ' | ' + board[9])
+    print('   |   |')
+    print('-----------')
+    print('   |   |')
+    print(' ' + board[4] + ' | ' + board[5] + ' | ' + board[6])
+    print('   |   |')
+    print('-----------')
+    print('   |   |')
+    print(' ' + board[1] + ' | ' + board[2] + ' | ' + board[3])
+    print('   |   |')
 
-def play_move(state, player, block_num):
-    if state[int((block_num-1)/3)][(block_num-1)%3] is ' ':
-        state[int((block_num-1)/3)][(block_num-1)%3] = player
+def inputPlayerLetter():
+    # Lets the player type which letter they want to be.
+    # Returns a list with the player’s letter as the first item, and the computer's letter as the second.
+    letter = ''
+    while not (letter == 'X' or letter == 'O'):
+        print('Do you want to be X or O?')
+        letter = input().upper()
+
+    # the first element in the list is the player’s letter, the second is the computer's letter.
+    if letter == 'X':
+        return ['X', 'O']
     else:
-        block_num = int(input("Block is not empty, ya blockhead! Choose again: "))
-        play_move(state, player, block_num)
-    
-def copy_game_state(state):
-    new_state = [[' ',' ',' '],[' ',' ',' '],[' ',' ',' ']]
-    for i in range(3):
-        for j in range(3):
-            new_state[i][j] = state[i][j]
-    return new_state
-    
-def check_current_state(game_state):    
-    # Check horizontals
-    if (game_state[0][0] == game_state[0][1] and game_state[0][1] == game_state[0][2] and game_state[0][0] is not ' '):
-        return game_state[0][0], "Done"
-    if (game_state[1][0] == game_state[1][1] and game_state[1][1] == game_state[1][2] and game_state[1][0] is not ' '):
-        return game_state[1][0], "Done"
-    if (game_state[2][0] == game_state[2][1] and game_state[2][1] == game_state[2][2] and game_state[2][0] is not ' '):
-        return game_state[2][0], "Done"
-    
-    # Check verticals
-    if (game_state[0][0] == game_state[1][0] and game_state[1][0] == game_state[2][0] and game_state[0][0] is not ' '):
-        return game_state[0][0], "Done"
-    if (game_state[0][1] == game_state[1][1] and game_state[1][1] == game_state[2][1] and game_state[0][1] is not ' '):
-        return game_state[0][1], "Done"
-    if (game_state[0][2] == game_state[1][2] and game_state[1][2] == game_state[2][2] and game_state[0][2] is not ' '):
-        return game_state[0][2], "Done"
-    
-    # Check diagonals
-    if (game_state[0][0] == game_state[1][1] and game_state[1][1] == game_state[2][2] and game_state[0][0] is not ' '):
-        return game_state[1][1], "Done"
-    if (game_state[2][0] == game_state[1][1] and game_state[1][1] == game_state[0][2] and game_state[2][0] is not ' '):
-        return game_state[1][1], "Done"
-    
-    # Check if draw
-    draw_flag = 0
-    for i in range(3):
-        for j in range(3):
-            if game_state[i][j] is ' ':
-                draw_flag = 1
-    if draw_flag is 0:
-        return None, "Draw"
-    
-    return None, "Not Done"
+        return ['O', 'X']
 
-def print_board(game_state):
-    print('----------------')
-    print('| ' + str(game_state[0][0]) + ' || ' + str(game_state[0][1]) + ' || ' + str(game_state[0][2]) + ' |')
-    print('----------------')
-    print('| ' + str(game_state[1][0]) + ' || ' + str(game_state[1][1]) + ' || ' + str(game_state[1][2]) + ' |')
-    print('----------------')
-    print('| ' + str(game_state[2][0]) + ' || ' + str(game_state[2][1]) + ' || ' + str(game_state[2][2]) + ' |')
-    print('----------------')
-    
-  
-# Initialize state values
-player = ['X','O',' ']
-states_dict = {}
-all_possible_states = [[list(i[0:3]),list(i[3:6]),list(i[6:10])] for i in itertools.product(player, repeat = 9)]
-n_states = len(all_possible_states) # 2 players, 9 spaces
-n_actions = 9   # 9 spaces
-state_values_for_AI_O = np.full((n_states),0.0)
-state_values_for_AI_X = np.full((n_states),0.0)
-print("n_states = %i \nn_actions = %i"%(n_states, n_actions))
+def whoGoesFirst():
+    # Randomly choose the player who goes first.
+    if random.randint(0, 1) == 0:
+        return 'computer'
+    else:
+        return 'player'
 
-# State values for AI 'O'
-for i in range(n_states):
-    states_dict[i] = all_possible_states[i]
-    winner, _ = check_current_state(states_dict[i])
-    if winner == 'O':   # AI won
-        state_values_for_AI_O[i] = 1
-    elif winner == 'X':   # AI lost
-        state_values_for_AI_O[i] = -1
-        
-# State values for AI 'X'       
-for i in range(n_states):
-    winner, _ = check_current_state(states_dict[i])
-    if winner == 'O':   # AI lost
-        state_values_for_AI_X[i] = -1
-    elif winner == 'X':   # AI won
-        state_values_for_AI_X[i] = 1
+def playAgain():
+    # This function returns True if the player wants to play again, otherwise it returns False.
+    print('Do you want to play again? (yes or no)')
+    return input().lower().startswith('y')
 
-def update_state_value_O(curr_state_idx, next_state_idx, learning_rate):
-    new_value = state_values_for_AI_O[curr_state_idx] + learning_rate*(state_values_for_AI_O[next_state_idx]  - state_values_for_AI_O[curr_state_idx])
-    state_values_for_AI_O[curr_state_idx] = new_value
-    
-def update_state_value_X(curr_state_idx, next_state_idx, learning_rate):
-    new_value = state_values_for_AI_X[curr_state_idx] + learning_rate*(state_values_for_AI_X[next_state_idx]  - state_values_for_AI_X[curr_state_idx])
-    state_values_for_AI_X[curr_state_idx] = new_value
+# 下子
+def makeMove(board, letter, move):
+    board[move] = letter
 
-def getBestMove(state, player, epsilon):
-    '''
-    Reinforcement Learning Algorithm
-    '''    
-    moves = []
-    curr_state_values = []
-    empty_cells = []
-    for i in range(3):
-        for j in range(3):
-            if state[i][j] is ' ':
-                empty_cells.append(i*3 + (j+1))
-    
-    for empty_cell in empty_cells:
-        moves.append(empty_cell)
-        new_state = copy_game_state(state)
-        play_move(new_state, player, empty_cell)
-        next_state_idx = list(states_dict.keys())[list(states_dict.values()).index(new_state)]
-        if player == 'X':
-            curr_state_values.append(state_values_for_AI_X[next_state_idx])
+# 判斷遊戲是否結束
+def isWinner(bo, le):
+    # Given a board and a player’s letter, this function returns True if that player has won.
+    # We use bo instead of board and le instead of letter so we don’t have to type as much.
+    return ((bo[7] == le and bo[8] == le and bo[9] == le) or  # across the top
+            (bo[4] == le and bo[5] == le and bo[6] == le) or  # across the middle
+            (bo[1] == le and bo[2] == le and bo[3] == le) or  # across the bottom
+            (bo[7] == le and bo[4] == le and bo[1] == le) or  # down the left side
+            (bo[8] == le and bo[5] == le and bo[2] == le) or  # down the middle
+            (bo[9] == le and bo[6] == le and bo[3] == le) or  # down the right side
+            (bo[7] == le and bo[5] == le and bo[3] == le) or  # diagonal
+            (bo[9] == le and bo[5] == le and bo[1] == le))  # diagonal
+
+def getBoardCopy(board):
+    # 複製一份棋盤，供電腦落子時使用
+    dupeBoard = []
+
+    for i in board:
+        dupeBoard.append(i)
+
+    return dupeBoard
+
+def isSpaceFree(board, move):
+    # 判斷這個位置是否有子，沒子返回True
+    return board[move] == ' '
+
+def getPlayerMove(board):
+    # 玩家落子
+    move = ' '
+    while move not in '1 2 3 4 5 6 7 8 9'.split() or not isSpaceFree(board, int(move)):
+        print('What is your next move? (1-9)')
+        move = input()
+    return int(move)
+
+def chooseRandomMoveFromList(board, movesList):
+    # 隨機返回一個可以落子的座標
+    # 如果沒有所給的movesList中沒有可以落子的，返回None
+    possibleMoves = []
+    for i in movesList:
+        if isSpaceFree(board, i):
+            possibleMoves.append(i)
+
+    if len(possibleMoves) != 0:
+        return random.choice(possibleMoves)
+    else:
+        return None
+
+def getComputerMove(board, computerLetter):
+    # 確定電腦的落子位置
+    if computerLetter == 'X':
+        playerLetter = 'O'
+    else:
+        playerLetter = 'X'
+
+    # Tic Tac Toe AI核心演算法:
+    # 首先判斷電腦方能否通過一次落子直接獲得遊戲勝利
+    for i in range(1, 10):
+        copy = getBoardCopy(board)
+        if isSpaceFree(copy, i):
+            makeMove(copy, computerLetter, i)
+            if isWinner(copy, computerLetter):
+                return i
+
+    # 判斷玩家下一次落子能否獲得勝利，如果能，給它堵上
+    for i in range(1, 10):
+        copy = getBoardCopy(board)
+        if isSpaceFree(copy, i):
+            makeMove(copy, playerLetter, i)
+            if isWinner(copy, playerLetter):
+                return i
+
+    # 如果角上能落子的話，在角上落子
+    move = chooseRandomMoveFromList(board, [1, 3, 7, 9])
+    if move != None:
+        return move
+
+    # 如果能在中心落子的話，在中心落子
+    if isSpaceFree(board, 5):
+        return 5
+
+    # 在邊上落子
+    return chooseRandomMoveFromList(board, [2, 4, 6, 8])
+
+def isBoardFull(board):
+    # 如果棋盤滿了，返回True
+    for i in range(1, 10):
+        if isSpaceFree(board, i):
+            return False
+    return True
+
+print('Welcome to Tic Tac Toe!')
+
+while True:
+    # 更新棋盤
+    theBoard = [' '] * 10
+    playerLetter, computerLetter = inputPlayerLetter()
+    turn = whoGoesFirst()
+    print('The ' + turn + ' will go first.')
+    gameIsPlaying = True
+
+    while gameIsPlaying:
+        if turn == 'player':
+            # 玩家回合
+            drawBoard(theBoard)
+            move = getPlayerMove(theBoard)
+            makeMove(theBoard, playerLetter, move)
+
+            if isWinner(theBoard, playerLetter):
+                drawBoard(theBoard)
+                print('Hooray! You have won the game!')
+                gameIsPlaying = False
+            else:
+                if isBoardFull(theBoard):
+                    drawBoard(theBoard)
+                    print('The game is a tie!')
+                    break
+                else:
+                    turn = 'computer'
+
         else:
-            curr_state_values.append(state_values_for_AI_O[next_state_idx])
-        
-    print('Possible moves = ' + str(moves))
-    print('Move values = ' + str(curr_state_values))    
-    best_move_idx = np.argmax(curr_state_values)
-    
-    if np.random.uniform(0,1) <= epsilon:       # Exploration
-        best_move = random.choice(empty_cells)
-        print('Agent decides to explore! Takes action = ' + str(best_move))
-        epsilon *= 0.99
-    else:   #Exploitation
-        best_move = moves[best_move_idx]
-        print('Agent decides to exploit! Takes action = ' + str(best_move))
-    return best_move
+            # 電腦回合
+            move = getComputerMove(theBoard, computerLetter)
+            makeMove(theBoard, computerLetter, move)
 
-# PLaying
+            if isWinner(theBoard, computerLetter):
+                drawBoard(theBoard)
+                print('The computer has beaten you! You lose.')
+                gameIsPlaying = False
+            else:
+                if isBoardFull(theBoard):
+                    drawBoard(theBoard)
+                    print('The game is a tie!')
+                    break
+                else:
+                    turn = 'player'
 
-#LOAD TRAINED STATE VALUES
-state_values_for_AI_X = np.loadtxt('trained_state_values_X.txt', dtype=np.float64)
-state_values_for_AI_O = np.loadtxt('trained_state_values_O.txt', dtype=np.float64)
-
-learning_rate = 0.2
-epsilon = 0.2
-num_iterations = 10000
-for iteration in range(num_iterations):
-    game_state = [[' ',' ',' '],
-              [' ',' ',' '],
-              [' ',' ',' ']]
-    current_state = "Not Done"
-    print("\nIteration " + str(iteration) + "!")
-    print_board(game_state)
-    winner = None
-    current_player_idx = random.choice([0,1])
-        
-    while current_state == "Not Done":
-        curr_state_idx = list(states_dict.keys())[list(states_dict.values()).index(game_state)]
-        if current_player_idx == 0:     # AI_X's turn
-            print("\nAI X's turn!")         
-            block_choice = getBestMove(game_state, players[current_player_idx], epsilon)
-            play_move(game_state ,players[current_player_idx], block_choice)
-            new_state_idx = list(states_dict.keys())[list(states_dict.values()).index(game_state)]
-            
-        else:       # AI_O's turn
-            print("\nAI O's turn!")   
-            block_choice = getBestMove(game_state, players[current_player_idx], epsilon)
-            play_move(game_state ,players[current_player_idx], block_choice)
-            new_state_idx = list(states_dict.keys())[list(states_dict.values()).index(game_state)]
-        
-        print_board(game_state)
-        #print('State value = ' + str(state_values_for_AI[new_state_idx]))
-        update_state_value_O(curr_state_idx, new_state_idx, learning_rate)
-        update_state_value_X(curr_state_idx, new_state_idx, learning_rate)
-        winner, current_state = check_current_state(game_state)
-        if winner is not None:
-            print(str(winner) + " won!")
-        else:
-            current_player_idx = (current_player_idx + 1)%2
-        
-        if current_state is "Draw":
-            print("Draw!")
-            
-        #time.sleep(1)
-print('Training Complete!')    
-
-# Save state values for future use
-np.savetxt('trained_state_values_X.txt', state_values_for_AI_X, fmt = '%.6f')
-np.savetxt('trained_state_values_O.txt', state_values_for_AI_O, fmt = '%.6f')
+    if not playAgain():
+        break
