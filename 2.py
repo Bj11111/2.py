@@ -30,7 +30,6 @@ def inputPlayerLetter():
         letter = letter.upper()
         
     # the first element in the list is the player’s letter, the second is the computer's letter.
-    st.session
     if letter == 'X':
         return ['X', 'O']
     else:
@@ -146,6 +145,7 @@ def isBoardFull(board):
 while True:
     # 更新棋盤
     theBoard = [' '] * 10
+    st.session
     playerLetter, computerLetter = inputPlayerLetter()
     turn = whoGoesFirst()
     print('The ' + turn + ' will go first.')
