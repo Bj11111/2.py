@@ -5,6 +5,7 @@ import streamlit as st
 import random
 
 # 列印方法
+st.session
 def drawBoard(board):
     # This function prints out the board that it was passed.
     # "board" is a list of 10 strings representing the board (ignore index 0)
@@ -142,7 +143,7 @@ def isBoardFull(board):
 
     st.write('Welcome to Tic Tac Toe!')
 
-    st.session
+    
 while True:
     # 更新棋盤
     theBoard = [' '] * 10
