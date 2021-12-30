@@ -9,17 +9,17 @@ import random
 def drawBoard(board):
     # This function prints out the board that it was passed.
     # "board" is a list of 10 strings representing the board (ignore index 0)
-    st.write('    |    |')
-    st.write(' ' + board[7] + '  | ' + board[8] + '  | ' + board[9])
-    st.write('    |    |')
-    st.write('-----------')
-    st.write('    |    |')
-    st.write(' ' + board[4] + '  | ' + board[5] + '  | ' + board[6])
-    st.write('    |    |')
-    st.write('-----------')
-    st.write('    |    |')
-    st.write(' ' + board[1] + '  | ' + board[2] + '  | ' + board[3])
-    st.write('    |    |')
+    st.write('     |     |')
+    st.write(' ' + board[7] + '   | ' + board[8] + '   | '  + board[9])
+    st.write('     |     |')
+    st.write('----------------')
+    st.write('     |     |')
+    st.write(' ' + board[4] + '   | ' + board[5] + '   | ' + board[6])
+    st.write('     |     |')
+    st.write('----------------')
+    st.write('     |     |')
+    st.write(' ' + board[1] + '   | ' + board[2] + '   | ' + board[3])
+    st.write('     |     |')
 
 def inputPlayerLetter():
     # Lets the player type which letter they want to be.
@@ -84,7 +84,7 @@ def getPlayerMove(board):
         st.write('What is your next move? (1-9)')
         move = input()
     return int(move)
-st.session
+
 def chooseRandomMoveFromList(board, movesList):
     # 隨機返回一個可以落子的座標
     # 如果沒有所給的movesList中沒有可以落子的，返回None
