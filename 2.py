@@ -26,6 +26,7 @@ def inputPlayerLetter():
     letter = ''
     while not (letter == 'X' or letter == 'O'):
         st.write('Do you want to be X or O?')
+        st.session
         letter = st.text_input('please input X or O?' , 'X O')
         letter = letter.upper()
     # the first element in the list is the player’s letter, the second is the computer's letter.
@@ -33,7 +34,6 @@ def inputPlayerLetter():
         return ['X', 'O']
     else:
         return ['O', 'X']
-st.session
 def whoGoesFirst():
     # Randomly choose the player who goes first.
     if random.randint(0, 1) == 0:
