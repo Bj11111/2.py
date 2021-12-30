@@ -41,7 +41,7 @@ def whoGoesFirst():
         return 'computer'
     else:
         return 'player'
-
+st.session
 def playAgain():
     # This function returns True if the player wants to play again, otherwise it returns False.
     st.write('Do you want to play again? (yes or no)')
