@@ -31,9 +31,9 @@ def inputPlayerLetter():
 st.session
     # the first element in the list is the player’s letter, the second is the computer's letter.
 if letter == 'X':
-        return ['X', 'O']
+    return ['X', 'O']
 else:
-        return ['O', 'X']
+    return ['O', 'X']
 
 def whoGoesFirst():
     # Randomly choose the player who goes first.
